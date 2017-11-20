@@ -1,8 +1,12 @@
+import config
+import models
 from flask import Flask
 from flask.cli import FlaskGroup
 
 
 app = Flask(__name__)
+app.config.from_object(config)
+models.db.init_app(app)
 
 
 def create_app(info=None):
