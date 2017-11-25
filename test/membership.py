@@ -6,6 +6,7 @@ sys.path.append(sys.path[0] + "/..")
 
 
 from app import app
+from flask_login import current_user
 
 
 class MembershipTestCase(unittest.TestCase):
@@ -41,22 +42,22 @@ class MembershipTestCase(unittest.TestCase):
         rv = self.login()
         with self.app.session_transaction() as sess:
             assert 200 == rv.status_code
-            assert 'success' in rv.data.decode('UTF-8')
-            assert sess['username'] == 'user'
+            assert b'profile' in rv.data
+            assert sess['user_id'] == '1'
 
     def test_logout(self):
         self.login()
         with self.app.session_transaction() as sess:
             assert not not sess
 
-        rv = self.app.get('/membership/logout', follow_redirects=True)
+        rv = self.app.put('/membership/logout', follow_redirects=True)
         assert 405 == rv.status_code
 
         rv = self.logout()
         assert 200 == rv.status_code
         assert b'success' in rv.data
         with self.app.session_transaction() as sess:
-            assert not sess
+            assert not sess.get('user_id')
 
     def test_profile(self):
         self.login()
