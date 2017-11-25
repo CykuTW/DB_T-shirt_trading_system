@@ -1,11 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from datetime import datetime
 
 
 db = SQLAlchemy()
 
 
-class Member(db.Model):
+class Member(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     realname = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(20), nullable=False)
@@ -15,3 +16,15 @@ class Member(db.Model):
     birthday = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     phone = db.Column(db.String(15), nullable=False)
     permission = db.Column(db.Integer, nullable=False, default=0)
+
+    def is_authenticated(self):
+        return True
+    
+    def is_active(self):
+        return self.permission & 0x1 != 0
+    
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)

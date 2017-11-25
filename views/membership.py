@@ -32,7 +32,7 @@ class ProfileView(MethodView):
     @login_required
     def get(self):
         user = current_user
-        if user.is_authenticated():
+        if user.is_authenticated:
             return 'profile'
         return ''
 
