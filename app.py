@@ -4,7 +4,7 @@ import views
 import utils
 import click
 import utils
-from flask import Flask
+from flask import Flask, url_for
 from flask.cli import FlaskGroup
 
 
@@ -12,6 +12,16 @@ app = Flask(__name__)
 app.config.from_object(config)
 models.db.init_app(app)
 utils.bcrypt.init_app(app)
+utils.login_manager.init_app(app)
+
+
+# Set up login_manager
+
+utils.login_manager.login_view = 'membership.LoginView'
+
+@utils.login_manager.user_loader
+def load_user(user_id):
+    return models.Member.query.filter_by(id=user_id).first()
 
 
 # Register blueprints
