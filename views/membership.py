@@ -1,6 +1,8 @@
 import models
-from flask import Blueprint, request, render_template, session
+import utils
+from flask import Blueprint, request, abort, redirect, render_template
 from flask.views import MethodView
+from flask_login import login_user, logout_user, current_user, login_required
 from utils import bcrypt
 
 
@@ -17,24 +19,31 @@ class LoginView(MethodView):
         password = request.form['password']
         user = models.Member.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, password):
-            session['id'] = user.id
-            session['username'] = user.username
-            return 'success'
+            login_user(user)
+            next = request.args.get('next')
+            if not next or not utils.is_safe_url(next):
+                return redirect('/membership/profile')
+            return redirect(next)
         return 'fail'
 
 
 class ProfileView(MethodView):
 
+    @login_required
     def get(self):
-        if session['username']:
+        user = current_user
+        if user.is_authenticated():
             return 'profile'
         return ''
 
 
 class LogoutView(MethodView):
 
+    def get(self):
+        return self.post()
+
     def post(self):
-        session.clear()
+        logout_user()
         return 'success'
 
 
