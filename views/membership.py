@@ -37,6 +37,12 @@ class ProfileView(MethodView):
         return ''
 
 
+class RegisterView(MethodView):
+
+    def get(self):
+        return render_template('membership/register.html')
+
+
 class LogoutView(MethodView):
 
     def get(self):
@@ -49,4 +55,5 @@ class LogoutView(MethodView):
 
 blueprint.add_url_rule('/login', view_func=LoginView.as_view(LoginView.__name__))
 blueprint.add_url_rule('/profile', view_func=ProfileView.as_view(ProfileView.__name__))
+blueprint.add_url_rule('/register', view_func=RegisterView.as_view(RegisterView.__name__))
 blueprint.add_url_rule('/logout', view_func=LogoutView.as_view(LogoutView.__name__))
