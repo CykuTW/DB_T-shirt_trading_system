@@ -1,8 +1,10 @@
 import models
 import utils
+import validators
 from flask import Blueprint, request, abort, redirect, render_template
 from flask.views import MethodView
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_validate import validate
 from utils import bcrypt
 
 
@@ -14,6 +16,7 @@ class LoginView(MethodView):
     def get(self):
         return render_template('membership/login.html')
 
+    @validate(validators.membership.LoginValidator)
     def post(self):
         username = request.form['username']
         password = request.form['password']
@@ -40,7 +43,13 @@ class ProfileView(MethodView):
 class RegisterView(MethodView):
 
     def get(self):
-        return render_template('membership/register.html')
+        token = utils.generate_token()
+        session['token'] = token
+        return render_template('membership/register.html', token=token)
+
+    @validate(validators.membership.RegisterValidator)
+    def post(self):
+        pass
 
 
 class LogoutView(MethodView):
