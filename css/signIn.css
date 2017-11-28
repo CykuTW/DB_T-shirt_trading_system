@@ -15,6 +15,11 @@ a:focus, a:hover {
     text-decoration: none; 
     color: #f25b6a; 
 }
+
+.navbar-brand{
+    font-size: 28px;
+  }
+  
 /*------------------------
  Account
 --------------------------*/
