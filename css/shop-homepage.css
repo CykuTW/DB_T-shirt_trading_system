@@ -2,12 +2,21 @@ body {
   padding-top: 45px;
 }
 
-.navbar-brand{
-  font-size: 28px;
+.add-to-cart, .card-title{
+  display: inline-block;
+}
+
+.add-to-cart{
+  background-image: url("../images/shopping_cart_add.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 #imaginary_container{
-  margin-top:20%; /* Don't copy this */
+  margin-top:30%; /* Don't copy this */
 }
 .stylish-input-group .input-group-addon{
   background: white !important; 

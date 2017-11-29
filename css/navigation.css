@@ -1,0 +1,20 @@
+.navbar-brand{
+  font-size: 28px;
+}
+
+.nav-item{
+  padding-right: 20px;
+}
+  
+.shopping-cart{
+  background-image: url("../images/shopping_cart.png");
+  background-size: 50px 50px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.shopping-cart:hover{
+  transform: scale(1.2,1.2);
+  transition-duration: 0.8s;
+}
