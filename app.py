@@ -9,7 +9,7 @@ from flask import Flask, url_for, render_template
 from flask.cli import FlaskGroup
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config.from_object(config)
 models.db.init_app(app)
 utils.bcrypt.init_app(app)
@@ -27,6 +27,7 @@ def load_user(user_id):
 
 # Register blueprints
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
+app.register_blueprint(views.goods.blueprint, url_prefix='/goods')
 
 
 # Error handler
@@ -76,6 +77,7 @@ def create_testdata():
         good_type = models.GoodType()
         good_type.size = 'M'
         good_type.state = 'test'
+        good_type.price = 399
         models.db.session.add(good_type)
         models.db.session.commit()
 
@@ -92,9 +94,6 @@ def create_testdata():
         good.type = good_type
         models.db.session.add(good)
         models.db.session.commit()
-
-        print(good_type.goods)
-
 
 if __name__ == '__main__':
     cli()
