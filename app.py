@@ -73,6 +73,28 @@ def create_testdata():
         models.db.session.add(member)
         models.db.session.commit()
 
+        good_type = models.GoodType()
+        good_type.size = 'M'
+        good_type.state = 'test'
+        models.db.session.add(good_type)
+        models.db.session.commit()
+
+        good = models.Good()
+        good.name = 'test1'
+        good.state = 'test1'
+        good.type = good_type
+        models.db.session.add(good)
+        models.db.session.commit()
+
+        good = models.Good()
+        good.name = 'test2'
+        good.state = 'test2'
+        good.type = good_type
+        models.db.session.add(good)
+        models.db.session.commit()
+
+        print(good_type.goods)
+
 
 if __name__ == '__main__':
     cli()
