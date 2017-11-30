@@ -17,12 +17,18 @@ class Member(UserMixin, db.Model):
     phone = db.Column(db.String(15), nullable=False)
     permission = db.Column(db.Integer, nullable=False, default=0)
 
+    def __init__(self):
+        super().__init__()
+
+    @property
     def is_authenticated(self):
         return True
     
+    @property
     def is_active(self):
         return self.permission & 0x1 != 0
     
+    @property
     def is_anonymous(self):
         return False
 

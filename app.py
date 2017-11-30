@@ -1,10 +1,11 @@
+import os
 import config
 import models
 import views
 import utils
 import click
 import utils
-from flask import Flask, url_for
+from flask import Flask, url_for, render_template
 from flask.cli import FlaskGroup
 
 
@@ -26,6 +27,20 @@ def load_user(user_id):
 
 # Register blueprints
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
+
+
+# Error handler
+@app.errorhandler(400)
+@app.errorhandler(401)
+@app.errorhandler(404)
+@app.errorhandler(500)
+@app.errorhandler(501)
+def error_handler(e):
+    error_file = os.path.join(os.getcwd(), 'templates/errors/{}.html'.format(e.code))
+    if os.path.isfile(error_file):
+        return render_template('errors/{}.html'.format(e.code)), e.code
+    else:
+        return str(e.code), e.code
 
 
 def create_app(info=None):
