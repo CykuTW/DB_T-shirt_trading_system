@@ -1,9 +1,14 @@
+*{
+  font-family: Gabriola;
+}
+
 .navbar-brand{
-  font-size: 28px;
+  font-size: 32px;
 }
 
 .nav-item{
   padding-right: 20px;
+  font-size: 20px;
 }
   
 .shopping-cart{
