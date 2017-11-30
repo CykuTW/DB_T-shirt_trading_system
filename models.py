@@ -52,4 +52,5 @@ class GoodType(db.Model):
     __tablename__ = 'GoodType'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     size = db.Column(db.String(5), nullable=False, unique=True)
+    price = db.Column(db.Integer, nullable=False)
     state = db.Column(db.String(10), nullable=False)
