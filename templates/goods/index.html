@@ -1,0 +1,70 @@
+{% extends "base/layout.html" %}
+
+{% block title %}Creative T-Shirt Trading Platform{% endblock %}
+
+{% block main %}
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <div id="imaginary_container">
+        <div class="input-group stylish-input-group">
+          <input type="text" class="form-control" placeholder="Search">
+          <span class="input-group-addon">
+            <button type="submit">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+      <!-- /.imaginary_container -->
+      <div class="list-group">
+        <a href="?type=XXL" class="list-group-item">XXL</a>
+        <a href="?type=XL" class="list-group-item">XL</a>
+        <a href="?type=L" class="list-group-item">L</a>
+        <a href="?type=M" class="list-group-item">M</a>
+        <a href="?type=S" class="list-group-item">S</a>
+      </div>
+      <!--<h1 class="my-4">Shop Name</h1>-->
+
+    </div>
+    <!-- /.col-sm-3 -->
+
+    <div class="col-lg-9">
+
+      <div class="row" style="margin-top: 3rem;">
+        {% for good in goods %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100">
+            <a href="#">
+              <img class="card-img-top" src="{{ url_for('static', filename='images/cat.jpg') }}" alt="">
+            </a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="#">{{ good.name }}</a>
+              </h4>
+              <div class="add-to-cart"></div>
+              <h5>Size: {{ good.type.size }}</h5>
+              <h5>{{ good.type.price }}</h5>
+              <p class="card-text">{{ good.description }}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.col-lg-9 -->
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+{% endblock %}
