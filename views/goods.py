@@ -25,6 +25,6 @@ class GoodsView(MethodView):
             query = query.limit(count).offset(count*(page-1))
 
         goods = query.all()
-        return render_template('goods/list.html', goods=goods)
+        return render_template('goods/index.html', goods=goods)
 
 blueprint.add_url_rule('/goods', view_func=GoodsView.as_view(GoodsView.__name__))
