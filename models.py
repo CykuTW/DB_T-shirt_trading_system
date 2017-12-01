@@ -45,6 +45,8 @@ class Good(db.Model):
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
     type_id = db.Column(db.Integer, db.ForeignKey('GoodType.id'))
     type = db.relationship('GoodType', backref='goods')
+    author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
+    author = db.relationship('Member', backref='goods')
     description = db.Column(db.Text, nullable=False, default='')
 
 
