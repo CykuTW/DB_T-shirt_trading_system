@@ -96,10 +96,15 @@ def error_handler(e):
     return '缺少必要的參數', 400
 ```
 
-### Utilities (utils.py)
+## Utilities (utils.py)
 
-1. generate_token(token_name=None) -> Union[str, str]  
-產生 CSRF 防禦用的 token，回傳 token_name 與 token，token_name 會影響儲存在 session 中的名稱，預設為 "token"。回傳的 token 則是該 token 的值，需手動在樣板 (template) 插入。
+### generate_token(token_name=None) -> Union[str, str]
+產生 CSRF 防禦用的 token，回傳 token_name 與 token，token_name 會影響儲存在 session 中的名稱，預設為 "token"。回傳的 token 則是該 token 的值，需手動在樣板 (template) 中插入。
 
-2. verify_token(token, token_name=None) -> bool  
-驗證 token 的函式，會去 session 中尋找與 token_name 相同的參數值並將其提出與傳入的 token 進行比較，  token_name 預設為 "token"。
+### verify_token(token, token_name=None) -> bool
+驗證 token 的函式，會去 session 中尋找與 token_name 相同的參數值並將其提出與傳入的 token 進行比較。token_name 預設為 "token"。
+
+**token 預設 1 小時會過期，過期則須重新產生**
+
+### is_safe_url(target) -> bool:  
+驗證 url 字串是否安全 (是否屬於相同網域之中)。
