@@ -85,6 +85,19 @@ def create_testdata():
         good.name = 'test1'
         good.state = 'test1'
         good.type = good_type
+        good.author = member
+        good.description = '''this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+'''
         models.db.session.add(good)
         models.db.session.commit()
 
@@ -92,8 +105,10 @@ def create_testdata():
         good.name = 'test2'
         good.state = 'test2'
         good.type = good_type
+        good.author = member
         models.db.session.add(good)
         models.db.session.commit()
+
 
 if __name__ == '__main__':
     cli()
