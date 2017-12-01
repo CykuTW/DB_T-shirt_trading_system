@@ -28,4 +28,15 @@ class GoodsView(MethodView):
         goods = query.all()
         return render_template('goods/index.html', goods=goods, args=request.args)
 
+
+class GoodDetailView(MethodView):
+
+    def get(self, good_id):
+        good = models.Good.query.filter_by(id=good_id).first()
+        if not good:
+            abort(400)
+        return render_template('goods/detail.html', good=good)
+
+
 blueprint.add_url_rule('/', view_func=GoodsView.as_view(GoodsView.__name__))
+blueprint.add_url_rule('/<int:good_id>', view_func=GoodDetailView.as_view(GoodDetailView.__name__))
