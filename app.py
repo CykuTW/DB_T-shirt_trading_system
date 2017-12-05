@@ -109,6 +109,29 @@ this is a description for test1.
         models.db.session.add(good)
         models.db.session.commit()
 
+        order = models.Order()
+        order.amount = 399
+        order.purchaser = member
+        models.db.session.add(order)
+        models.db.session.commit()
+
+        order_item = models.OrderItem()
+        order_item.quantity = 1
+        order_item.good = good
+        order_item.order = order
+        models.db.session.add(order_item)
+        models.db.session.commit()
+
+        rating = models.Rating()
+        rating.score = 4
+        rating.message = 'hi'
+        rating.for_order_item = order_item
+        rating.author = member
+        models.db.session.add(rating)
+        models.db.session.commit()
+
+        print(order_item.rating)
+
 
 if __name__ == '__main__':
     cli()
