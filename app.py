@@ -9,7 +9,7 @@ from flask import Flask, url_for, render_template
 from flask.cli import FlaskGroup
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config.from_object(config)
 models.db.init_app(app)
 utils.bcrypt.init_app(app)
@@ -27,6 +27,7 @@ def load_user(user_id):
 
 # Register blueprints
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
+app.register_blueprint(views.goods.blueprint, url_prefix='/goods')
 
 
 # Error handler
@@ -72,6 +73,64 @@ def create_testdata():
         member.permission = 0x1
         models.db.session.add(member)
         models.db.session.commit()
+
+        good_type = models.GoodType()
+        good_type.size = 'M'
+        good_type.state = 'test'
+        good_type.price = 399
+        models.db.session.add(good_type)
+        models.db.session.commit()
+
+        good = models.Good()
+        good.name = 'test1'
+        good.state = 'test1'
+        good.type = good_type
+        good.author = member
+        good.description = '''this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+this is a description for test1.
+'''
+        models.db.session.add(good)
+        models.db.session.commit()
+
+        good = models.Good()
+        good.name = 'test2'
+        good.state = 'test2'
+        good.type = good_type
+        good.author = member
+        models.db.session.add(good)
+        models.db.session.commit()
+
+        order = models.Order()
+        order.amount = 399
+        order.purchaser = member
+        models.db.session.add(order)
+        models.db.session.commit()
+
+        order_item = models.OrderItem()
+        order_item.quantity = 1
+        order_item.good = good
+        order_item.order = order
+        models.db.session.add(order_item)
+        models.db.session.commit()
+
+        rating = models.Rating()
+        rating.score = 4
+        rating.message = 'hi'
+        rating.for_order_item = order_item
+        rating.author = member
+        models.db.session.add(rating)
+        models.db.session.commit()
+
+        print(order_item.rating)
 
 
 if __name__ == '__main__':

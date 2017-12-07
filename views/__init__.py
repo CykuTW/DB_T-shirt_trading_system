@@ -1,1 +1,2 @@
-from views.membership import blueprint
+import views.membership
+import views.goods
