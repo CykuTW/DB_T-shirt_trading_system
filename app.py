@@ -14,10 +14,11 @@ app.config.from_object(config)
 models.db.init_app(app)
 utils.bcrypt.init_app(app)
 utils.login_manager.init_app(app)
+utils.redis_store.init_app(app)
+views.shopping_cart.init_app(app)
 
 
 # Set up login_manager
-
 utils.login_manager.login_view = 'membership.LoginView'
 
 @utils.login_manager.user_loader
@@ -28,6 +29,7 @@ def load_user(user_id):
 # Register blueprints
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
 app.register_blueprint(views.goods.blueprint, url_prefix='/goods')
+app.register_blueprint(views.shopping_cart.blueprint, url_prefix='/shopping_cart')
 
 
 # Error handler
