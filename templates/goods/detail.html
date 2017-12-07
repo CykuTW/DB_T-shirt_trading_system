@@ -69,43 +69,22 @@
       margin-bottom: 1.5rem;
     }
   </style>
-  <div class="row" style="margin-top: 0.5rem; margin-bottom: 1rem;">
-    <div class="col-lg-4 card-comment">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">user1 said:</h4>
-            <h6 class="card-subtitle mb-2 text-muted">2017-01-01 &nbsp; &nbsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-        </div>
-    </div>
+  <div class="row" style="margin-top: 2rem; margin-bottom: 1rem;">
+    {% for rating in ratings %}
     <div class="col-lg-4 card-comment">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">user2 said:</h4>
-          <h6 class="card-subtitle mb-2 text-muted">2017-01-01 &nbsp; &nbsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <h5 class="card-title">{{ rating.author.username }} said:</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ rating.time.strftime('%Y-%m-%d') }}
+            &nbsp;&nbsp;&nbsp;
+            {{ ('&#9733; ' * rating.score + '&#9734; ' * (5-rating.score)) | safe }}
+          </h6>
+          <p class="card-text">{{ rating.message }}</p>
         </div>
       </div>
     </div>
-    <div class="col-lg-4 card-comment">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">user3 said:</h4>
-          <h6 class="card-subtitle mb-2 text-muted">2017-01-01 &nbsp; &nbsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 card-comment">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">user3 said:</h4>
-          <h6 class="card-subtitle mb-2 text-muted">2017-01-01 &nbsp; &nbsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 

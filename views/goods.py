@@ -32,10 +32,13 @@ class GoodsView(MethodView):
 class GoodDetailView(MethodView):
 
     def get(self, good_id):
-        good = models.Good.query.filter_by(id=good_id).first()
-        if not good:
-            abort(400)
-        return render_template('goods/detail.html', good=good)
+        good = models.Good.query \
+                     .filter_by(id=good_id) \
+                     .first() or abort(400)
+        ratings = models.Rating.query \
+                        .join(models.OrderItem) \
+                        .filter_by(good=good).all()
+        return render_template('goods/detail.html', good=good, ratings=ratings)
 
 
 blueprint.add_url_rule('/', view_func=GoodsView.as_view(GoodsView.__name__))
