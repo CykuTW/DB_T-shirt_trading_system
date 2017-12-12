@@ -15,7 +15,6 @@ models.db.init_app(app)
 utils.bcrypt.init_app(app)
 utils.login_manager.init_app(app)
 utils.redis_store.init_app(app)
-views.shopping_cart.init_app(app)
 
 
 # Set up login_manager
