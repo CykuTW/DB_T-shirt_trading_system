@@ -88,3 +88,13 @@ class Rating(db.Model):
     for_order_item = db.relationship('OrderItem', uselist=False, backref=db.backref('rating', uselist=False))
     author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
     author = db.relationship('Member', backref='made_ratings')
+
+
+class ShoppingCartItem(db.Model):
+    __tablename__ = 'ShoppingCartItem'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    amount = db.Column(db.Integer, nullable=False)
+    memeber_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
+    member = db.relationship('Member', backref='shopping_cart')
+    goods_id = db.Column(db.Integer, db.ForeignKey('Good.id'))
+    goods = db.relationship('Good')
