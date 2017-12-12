@@ -11,6 +11,7 @@ from flask.cli import FlaskGroup
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_object(config)
+app.use_reloader = False
 models.db.init_app(app)
 utils.bcrypt.init_app(app)
 utils.login_manager.init_app(app)
