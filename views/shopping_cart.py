@@ -45,10 +45,12 @@ def _before_request():
         utils.redis_store.expire(str(user.id), 60*60) # 1 hour
         utils.redis_store.delete('_{}'.format(user.id))
         for item in user.shopping_cart:
-            utils.redis_store.sadd(
-                '_{}'.format(user.id),
-                pickle.dumps(item.good)
-            )
+            utils.redis_store.sadd({
+                'id': item.id,
+                'name': item.name,
+                'size': item.type.size,
+                'price': item.type.price
+            })
 
 
 @request_started.connect_via(blinker.ANY) # ANY sender
