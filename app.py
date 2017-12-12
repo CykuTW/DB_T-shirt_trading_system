@@ -30,6 +30,7 @@ def load_user(user_id):
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
 app.register_blueprint(views.goods.blueprint, url_prefix='/goods')
 app.register_blueprint(views.shopping_cart.blueprint, url_prefix='/shopping_cart')
+app.register_blueprint(views.shopping_cart.api_blueprint, url_prefix='/api/shopping_cart')
 
 
 # Error handler

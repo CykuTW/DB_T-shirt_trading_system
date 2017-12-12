@@ -8,6 +8,7 @@ from flask_login import login_required, current_user
 
 
 blueprint = Blueprint('shopping_cart', __name__)
+api_blueprint = Blueprint('api_shopping_cart', __name__)
 
 
 class ShoppingCartView(MethodView):
@@ -19,6 +20,9 @@ class ShoppingCartView(MethodView):
         items = [pickle.loads(i) for i in items]
         return render_template('/shopping_cart/index.html', items=items)
 
+
+class ApiShoppingCartView(MethodView):
+
     @login_required
     def post(self):
         goods_id = request.form['goods_id']
@@ -26,6 +30,24 @@ class ShoppingCartView(MethodView):
         user = current_user
         utils.redis_store.sadd(
             '_{}'.format(user.id), 
+            pickle.dumps({
+                'id': goods.id,
+                'name': goods.name,
+                'size': goods.type.size,
+                'price': goods.type.price
+            })
+        )
+        return 'OK'
+
+
+class ApiShoppingCartItemView(MethodView):
+
+    @login_required
+    def delete(self, goods_id):
+        user = current_user
+        goods = models.Good.query.filter_by(id=goods_id).first() or abort(400)
+        utils.redis_store.srem(
+            '_{}'.format(user.id),
             pickle.dumps({
                 'id': goods.id,
                 'name': goods.name,
@@ -95,3 +117,5 @@ def _register_signal_handler(sender, **extra):
 
 
 blueprint.add_url_rule('/', view_func=ShoppingCartView.as_view(ShoppingCartView.__name__))
+api_blueprint.add_url_rule('/', view_func=ApiShoppingCartView.as_view(ApiShoppingCartView.__name__))
+api_blueprint.add_url_rule('/<int:goods_id>', view_func=ApiShoppingCartItemView.as_view(ApiShoppingCartItemView.__name__))
