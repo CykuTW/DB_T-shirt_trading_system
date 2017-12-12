@@ -2,7 +2,7 @@ import utils
 import models
 import pickle
 import blinker
-from flask import Blueprint, request, abort, render_template, request_started
+from flask import Blueprint, request, abort, render_template, request_started, current_app
 from flask.views import MethodView
 from flask_login import login_required, current_user
 
@@ -21,16 +21,16 @@ class ShoppingCartView(MethodView):
 
     @login_required
     def post(self):
-        good_id = request.form['good_id']
-        good = models.Good.query.filter_by(id=good_id).first() or abort(400)
+        goods_id = request.form['goods_id']
+        goods = models.Good.query.filter_by(id=good_id).first() or abort(400)
         user = current_user
         utils.redis_store.sadd(
             '_{}'.format(user.id), 
             pickle.dumps({
-                'id': good.id,
-                'name': good.name,
-                'size': good.type.size,
-                'price': good.type.price
+                'id': goods.id,
+                'name': goods.name,
+                'size': goods.type.size,
+                'price': goods.type.price
             })
         )
         return 'OK'
@@ -45,23 +45,50 @@ def _before_request():
         utils.redis_store.expire(str(user.id), 60*60) # 1 hour
         utils.redis_store.delete('_{}'.format(user.id))
         for item in user.shopping_cart:
-            utils.redis_store.sadd({
-                'id': item.id,
-                'name': item.name,
-                'size': item.type.size,
-                'price': item.type.price
-            })
+            goods = item.goods
+            utils.redis_store.sadd(
+                '_{}'.format(user.id),
+                pickle.dumps({
+                    'id': goods.id,
+                    'name': goods.name,
+                    'size': goods.type.size,
+                    'price': goods.type.price
+                })
+            )
+            models.db.session.delete(item)
+            models.db.session.commit()
 
 
 @request_started.connect_via(blinker.ANY) # ANY sender
 def _register_signal_handler(sender, **extra):
     # Set up redis keyspace notification callback
-    def _redis_del_key_handler(message):
-        print('redis expire:', message.data)
+    def _redis_expire_key_handler(message):
+        from app import app
+        with app.app_context():
+            user_id = int(message['data'])
+            user = models.Member.query.filter_by(id=user_id).first()
+            if not user:
+                return
+
+            items = utils.redis_store.smembers('_{}'.format(user_id))
+            items = [pickle.loads(i) for i in items]
+            for item in items:
+                goods = models.Good \
+                            .query \
+                            .filter_by(id=item['id']) \
+                            .first()
+                if not goods:
+                    continue
+                item = models.ShoppingCartItem()
+                item.goods = goods
+                item.member = user
+                models.db.session.add(item)
+            utils.redis_store.delete('_{}'.format(user_id))
+            models.db.session.commit()
 
     _pubsub = utils.redis_store.pubsub()
     _pubsub.psubscribe(**{
-        '__keyevent@0__:expire': _redis_del_key_handler
+        '__keyevent@0__:*': _redis_expire_key_handler
     })
     _pubsub.run_in_thread(sleep_time=1)
     request_started.disconnect(_register_signal_handler)
