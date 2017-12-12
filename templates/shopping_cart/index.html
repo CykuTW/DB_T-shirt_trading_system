@@ -1,0 +1,55 @@
+{% extends "base/layout.html" %}
+
+{% block title %}Creative T-Shirt Trading Platform{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-3">
+          <div id="container">
+              <div class="input-group stylish-input-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                  <span class="input-group-addon">
+                      <button type="submit">
+                          <span class="glyphicon glyphicon-search"></span>
+                      </button>
+                  </span>
+              </div>
+          </div>
+          <!-- /.imaginary_container -->
+
+          <h1 class="my-4">Shop Cart</h1>
+          <div class="list-group">
+              <a href="#" class="list-group-item">XXL</a>
+              <a href="#" class="list-group-item">XL</a>
+              <a href="#" class="list-group-item">L</a>
+              <a href="#" class="list-group-item">M</a>
+              <a href="#" class="list-group-item">S</a>
+          </div>
+      </div>
+
+      <div class="col-lg-9">
+        <div class="row">
+          {% for item in items %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="#">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/cat.jpg') }}" alt="">
+              </a>
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#">{{ item['name'] }}</a>
+                </h4>
+                <h5>Size: {{ item['size'] }}</h5>
+                <h5>${{ item['price'] }}</h5>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
