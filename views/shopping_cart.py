@@ -15,18 +15,23 @@ class ShoppingCartView(MethodView):
     @login_required
     def get(self):
         user = current_user
-        items = utils.redis_store.lrange('_{}'.format(user.id), 0, -1)
+        items = utils.redis_store.smembers('_{}'.format(user.id))
         items = [pickle.loads(i) for i in items]
-        return str(items)
+        return render_template('/shopping_cart/index.html', items=items)
 
     @login_required
     def post(self):
         good_id = request.form['good_id']
         good = models.Good.query.filter_by(id=good_id).first() or abort(400)
         user = current_user
-        utils.redis_store.lpush(
+        utils.redis_store.sadd(
             '_{}'.format(user.id), 
-            pickle.dumps(good)
+            pickle.dumps({
+                'id': good.id,
+                'name': good.name,
+                'size': good.type.size,
+                'price': good.type.price
+            })
         )
         return 'OK'
 
@@ -40,7 +45,7 @@ def _before_request():
         utils.redis_store.expire(str(user.id), 60*60) # 1 hour
         utils.redis_store.delete('_{}'.format(user.id))
         for item in user.shopping_cart:
-            utils.redis_store.lpush(
+            utils.redis_store.sadd(
                 '_{}'.format(user.id),
                 pickle.dumps(item.good)
             )
