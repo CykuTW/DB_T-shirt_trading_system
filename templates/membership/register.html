@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <form method="POST">
-                        <h4 class="card-title">註冊新帳戶</h4>
+                        <h4 class="card-title">註冊新會員</h4>
                         <p class="card-text">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"><span style="color: #C20202;">*</span> 帳戶名稱</label>
@@ -73,11 +73,10 @@
                                     <input type="password" name="confirm_password" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 d-flex justify-content-center">
-                                    <input type="hidden" name="token" value="{{ token }}">
-                                    <button type="submit" class="btn btn-primary">註冊</button>
-                                </div>
+                            <div class="text-center">
+                              <input type="hidden" name="token" value="{{ token }}">
+                              <button type="submit" class="btn btn-primary">註冊</button>
+                              <a href="{{ url_for('membership.LoginView') }}" class="btn btn-secondary">回到登入畫面</a>
                             </div>
                         </p>
                     </form>
