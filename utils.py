@@ -5,12 +5,15 @@ import datetime
 from flask import request, session
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_redis import FlaskRedis
 from Crypto.Hash import SHA256
 from urllib.parse import urlparse, urljoin
 from typing import Union
 
 
 bcrypt = Bcrypt()
+
+redis_store = FlaskRedis()
 
 login_manager = LoginManager()
 

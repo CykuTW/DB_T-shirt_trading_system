@@ -37,21 +37,21 @@ class Member(UserMixin, db.Model):
         return str(self.id)
 
 
-class Good(db.Model):
-    __tablename__ = 'Good'
+class Goods(db.Model):
+    __tablename__ = 'Goods'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), nullable=False)
     state = db.Column(db.String(10), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    type_id = db.Column(db.Integer, db.ForeignKey('GoodType.id'))
-    type = db.relationship('GoodType', backref='goods')
+    type_id = db.Column(db.Integer, db.ForeignKey('GoodsType.id'))
+    type = db.relationship('GoodsType', backref='goods_list')
     author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
-    author = db.relationship('Member', backref='goods')
+    author = db.relationship('Member', backref='goods_list')
     description = db.Column(db.Text, nullable=False, default='')
 
 
-class GoodType(db.Model):
-    __tablename__ = 'GoodType'
+class GoodsType(db.Model):
+    __tablename__ = 'GoodsType'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     size = db.Column(db.String(5), nullable=False, unique=True)
     price = db.Column(db.Integer, nullable=False)
@@ -74,8 +74,8 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False, default=1)
     order_id = db.Column(db.Integer, db.ForeignKey('Order.id'))
     order = db.relationship('Order', backref='items')
-    good_id = db.Column(db.Integer, db.ForeignKey('Good.id'))
-    good = db.relationship('Good', backref='ref_orders')
+    good_id = db.Column(db.Integer, db.ForeignKey('Goods.id'))
+    goods = db.relationship('Goods', backref='ref_orders')
 
 
 class Rating(db.Model):
@@ -88,3 +88,13 @@ class Rating(db.Model):
     for_order_item = db.relationship('OrderItem', uselist=False, backref=db.backref('rating', uselist=False))
     author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
     author = db.relationship('Member', backref='made_ratings')
+
+
+class ShoppingCartItem(db.Model):
+    __tablename__ = 'ShoppingCartItem'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    amount = db.Column(db.Integer, nullable=False, default=1)
+    memeber_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
+    member = db.relationship('Member', backref=db.backref('shopping_cart', cascade='all,delete-orphan'), single_parent=True)
+    goods_id = db.Column(db.Integer, db.ForeignKey('Goods.id'))
+    goods = db.relationship('Goods', cascade_backrefs='delete')

@@ -12,7 +12,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item"><a href="#">Goods</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ good.name }}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{ goods.name }}</li>
         </ol>
       </nav>
     </div>
@@ -43,24 +43,18 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-8">
-          <div class="input-group">
-            <span class="input-group-addon">數量</span>
-            <input type="number" value="1" min="1" class="form-control" placeholder="數量">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button">+加入購物車</button>
-            </span>
-          </div>
+          <button class="btn btn-primary add-to-shopping-cart" data-goods-id='{{ goods.id }}' type="button">+加入購物車</button>
         </div>
       </div>
     </div>
     <div class="col-lg-6">
       <div style="margin-top: 1.5rem">
-        <h3>{{ good.name }}</h3>
-        <p>Designed by <a href="/membership/{{ good.author.id }}">{{ good.author.username }}</a></p>
-        <p>Size: {{ good.type.size }}</p>
-        <p>Price: {{ good.type.price }}</p>
+        <h3>{{ goods.name }}</h3>
+        <p>Designed by <a href="/membership/{{ goods.author.id }}">{{ goods.author.username }}</a></p>
+        <p>Size: {{ goods.type.size }}</p>
+        <p>Price: {{ goods.type.price }}</p>
         <p>&#9733; &#9733; &#9733; &#9733; &#9734;</p>
-        <p style="white-space: pre-wrap;">{{ good.description }}</p>
+        <p style="white-space: pre-wrap;">{{ goods.description }}</p>
       </div>
     </div>
   </div>
@@ -87,5 +81,29 @@
     {% endfor %}
   </div>
 </div>
+
+<script>
+  (function(){
+    $('.add-to-shopping-cart').popover({
+      content: '已添加到購物車',
+      trigger: 'click'
+    });
+
+    $('.add-to-shopping-cart').on('click', function() {
+      let that = this;
+      setTimeout(function() {
+        $(that).popover('hide');
+      }, 3000);
+
+      $.ajax({
+        url: '{{ url_for("api_shopping_cart.ApiShoppingCartView") }}',
+        type: 'POST',
+        data: {
+          goods_id: $(this).data('goods-id')
+        }
+      })
+    });
+  })();
+</script>
 
 {% endblock %}
