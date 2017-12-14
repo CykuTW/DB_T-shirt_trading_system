@@ -15,6 +15,10 @@
     <link href="{{ url_for('static', filename='css/shop-homepage.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/navigation.css') }}" rel="stylesheet">
 
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
     {% endblock %}
 </head>
 <body>
@@ -58,9 +62,6 @@
     <!-- /.container -->
   </footer>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
   <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 </body>

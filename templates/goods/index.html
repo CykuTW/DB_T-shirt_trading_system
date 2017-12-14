@@ -44,7 +44,7 @@
               <h4 class="card-title">
                 <a href="#">{{ goods.name }}</a>
               </h4>
-              <div class="add-to-cart"></div>
+              <a class="btn float-right add-to-cart" data-goods-id='{{ goods.id }}'></a>
               <h5>Size: {{ goods.type.size }}</h5>
               <h5>{{ goods.type.price }}</h5>
             </div>
@@ -65,5 +65,29 @@
 
 </div>
 <!-- /.container -->
+
+<script>
+  (function(){
+    $('.add-to-cart').popover({
+      content: '已添加到購物車',
+      trigger: 'click'
+    });
+
+    $('.add-to-cart').on('click', function() {
+      let that = this;
+      setTimeout(function() {
+        $(that).popover('hide');
+      }, 3000);
+
+      $.ajax({
+        url: '{{ url_for("api_shopping_cart.ApiShoppingCartView") }}',
+        type: 'POST',
+        data: {
+          goods_id: $(this).data('goods-id')
+        }
+      })
+    });
+  })();
+</script>
 
 {% endblock %}
