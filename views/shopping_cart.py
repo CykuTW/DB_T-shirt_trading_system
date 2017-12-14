@@ -26,7 +26,7 @@ class ApiShoppingCartView(MethodView):
     @login_required
     def post(self):
         goods_id = request.form['goods_id']
-        goods = models.Goods.query.filter_by(id=good_id).first() or abort(400)
+        goods = models.Goods.query.filter_by(id=goods_id).first() or abort(400)
         user = current_user
         utils.redis_store.sadd(
             '_{}'.format(user.id), 
