@@ -77,19 +77,19 @@ def create_testdata():
         models.db.session.add(member)
         models.db.session.commit()
 
-        good_type = models.GoodType()
-        good_type.size = 'M'
-        good_type.state = 'test'
-        good_type.price = 399
-        models.db.session.add(good_type)
+        goods_type = models.GoodsType()
+        goods_type.size = 'M'
+        goods_type.state = 'test'
+        goods_type.price = 399
+        models.db.session.add(goods_type)
         models.db.session.commit()
 
-        good = models.Good()
-        good.name = 'test1'
-        good.state = 'test1'
-        good.type = good_type
-        good.author = member
-        good.description = '''this is a description for test1.
+        goods = models.Goods()
+        goods.name = 'test1'
+        goods.state = 'test1'
+        goods.type = goods_type
+        goods.author = member
+        goods.description = '''this is a description for test1.
 this is a description for test1.
 this is a description for test1.
 this is a description for test1.
@@ -101,15 +101,15 @@ this is a description for test1.
 this is a description for test1.
 this is a description for test1.
 '''
-        models.db.session.add(good)
+        models.db.session.add(goods)
         models.db.session.commit()
 
-        good = models.Good()
-        good.name = 'test2'
-        good.state = 'test2'
-        good.type = good_type
-        good.author = member
-        models.db.session.add(good)
+        goods = models.Goods()
+        goods.name = 'test2'
+        goods.state = 'test2'
+        goods.type = goods_type
+        goods.author = member
+        models.db.session.add(goods)
         models.db.session.commit()
 
         order = models.Order()
@@ -120,7 +120,7 @@ this is a description for test1.
 
         order_item = models.OrderItem()
         order_item.quantity = 1
-        order_item.good = good
+        order_item.goods = goods
         order_item.order = order
         models.db.session.add(order_item)
         models.db.session.commit()

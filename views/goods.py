@@ -17,7 +17,7 @@ class GoodsView(MethodView):
         query = models.Goods.query
 
         if good_type:
-            query = query.join(models.GoodType).filter_by(size=good_type)
+            query = query.join(models.GoodsType).filter_by(size=good_type)
         
         if keyword:
             query = query.filter(models.Goods.name.like('%{}%'.format(keyword)))

@@ -43,15 +43,15 @@ class Goods(db.Model):
     name = db.Column(db.String(30), nullable=False)
     state = db.Column(db.String(10), nullable=False)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    type_id = db.Column(db.Integer, db.ForeignKey('GoodType.id'))
-    type = db.relationship('GoodType', backref='goods')
+    type_id = db.Column(db.Integer, db.ForeignKey('GoodsType.id'))
+    type = db.relationship('GoodsType', backref='goods_list')
     author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
-    author = db.relationship('Member', backref='goods')
+    author = db.relationship('Member', backref='goods_list')
     description = db.Column(db.Text, nullable=False, default='')
 
 
-class GoodType(db.Model):
-    __tablename__ = 'GoodType'
+class GoodsType(db.Model):
+    __tablename__ = 'GoodsType'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     size = db.Column(db.String(5), nullable=False, unique=True)
     price = db.Column(db.Integer, nullable=False)
