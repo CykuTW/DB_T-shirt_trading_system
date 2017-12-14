@@ -26,7 +26,7 @@ class ApiShoppingCartView(MethodView):
     @login_required
     def post(self):
         goods_id = request.form['goods_id']
-        goods = models.Good.query.filter_by(id=good_id).first() or abort(400)
+        goods = models.Goods.query.filter_by(id=good_id).first() or abort(400)
         user = current_user
         utils.redis_store.sadd(
             '_{}'.format(user.id), 
@@ -45,7 +45,7 @@ class ApiShoppingCartItemView(MethodView):
     @login_required
     def delete(self, goods_id):
         user = current_user
-        goods = models.Good.query.filter_by(id=goods_id).first() or abort(400)
+        goods = models.Goods.query.filter_by(id=goods_id).first() or abort(400)
         utils.redis_store.srem(
             '_{}'.format(user.id),
             pickle.dumps({
@@ -95,7 +95,7 @@ def _register_signal_handler(sender, **extra):
             items = utils.redis_store.smembers('_{}'.format(user_id))
             items = [pickle.loads(i) for i in items]
             for item in items:
-                goods = models.Good \
+                goods = models.Goods \
                             .query \
                             .filter_by(id=item['id']) \
                             .first()

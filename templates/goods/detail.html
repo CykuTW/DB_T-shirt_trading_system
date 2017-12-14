@@ -12,7 +12,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item"><a href="#">Goods</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ good.name }}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{ goods.name }}</li>
         </ol>
       </nav>
     </div>
@@ -55,12 +55,12 @@
     </div>
     <div class="col-lg-6">
       <div style="margin-top: 1.5rem">
-        <h3>{{ good.name }}</h3>
-        <p>Designed by <a href="/membership/{{ good.author.id }}">{{ good.author.username }}</a></p>
-        <p>Size: {{ good.type.size }}</p>
-        <p>Price: {{ good.type.price }}</p>
+        <h3>{{ goods.name }}</h3>
+        <p>Designed by <a href="/membership/{{ goods.author.id }}">{{ goods.author.username }}</a></p>
+        <p>Size: {{ goods.type.size }}</p>
+        <p>Price: {{ goods.type.price }}</p>
         <p>&#9733; &#9733; &#9733; &#9733; &#9734;</p>
-        <p style="white-space: pre-wrap;">{{ good.description }}</p>
+        <p style="white-space: pre-wrap;">{{ goods.description }}</p>
       </div>
     </div>
   </div>

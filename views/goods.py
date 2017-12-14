@@ -14,31 +14,31 @@ class GoodsView(MethodView):
         page = request.args.get('page')
         count = request.args.get('count')
 
-        query = models.Good.query
+        query = models.Goods.query
 
         if good_type:
             query = query.join(models.GoodType).filter_by(size=good_type)
         
         if keyword:
-            query = query.filter(models.Good.name.like('%{}%'.format(keyword)))
+            query = query.filter(models.Goods.name.like('%{}%'.format(keyword)))
 
         if page and count:
             query = query.limit(count).offset(count*(page-1))
 
-        goods = query.all()
-        return render_template('goods/index.html', goods=goods, args=request.args)
+        goods_list = query.all()
+        return render_template('goods/index.html', goods_list=goods_list, args=request.args)
 
 
 class GoodDetailView(MethodView):
 
     def get(self, good_id):
-        good = models.Good.query \
+        goods = models.Goods.query \
                      .filter_by(id=good_id) \
                      .first() or abort(400)
         ratings = models.Rating.query \
                         .join(models.OrderItem) \
-                        .filter_by(good=good).all()
-        return render_template('goods/detail.html', good=good, ratings=ratings)
+                        .filter_by(goods=goods).all()
+        return render_template('goods/detail.html', goods=goods, ratings=ratings)
 
 
 blueprint.add_url_rule('/', view_func=GoodsView.as_view(GoodsView.__name__))
