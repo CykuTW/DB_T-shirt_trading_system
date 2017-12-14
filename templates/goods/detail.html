@@ -43,13 +43,7 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-8">
-          <div class="input-group">
-            <span class="input-group-addon">數量</span>
-            <input type="number" value="1" min="1" class="form-control" placeholder="數量">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button">+加入購物車</button>
-            </span>
-          </div>
+          <button class="btn btn-primary add-to-shopping-cart" data-goods-id='{{ goods.id }}' type="button">+加入購物車</button>
         </div>
       </div>
     </div>
@@ -87,5 +81,29 @@
     {% endfor %}
   </div>
 </div>
+
+<script>
+  (function(){
+    $('.add-to-shopping-cart').popover({
+      content: '已添加到購物車',
+      trigger: 'click'
+    });
+
+    $('.add-to-shopping-cart').on('click', function() {
+      let that = this;
+      setTimeout(function() {
+        $(that).popover('hide');
+      }, 3000);
+
+      $.ajax({
+        url: '{{ url_for("api_shopping_cart.ApiShoppingCartView") }}',
+        type: 'POST',
+        data: {
+          goods_id: $(this).data('goods-id')
+        }
+      })
+    });
+  })();
+</script>
 
 {% endblock %}
