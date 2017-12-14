@@ -29,11 +29,11 @@ class GoodsView(MethodView):
         return render_template('goods/index.html', goods_list=goods_list, args=request.args)
 
 
-class GoodDetailView(MethodView):
+class GoodsDetailView(MethodView):
 
-    def get(self, good_id):
+    def get(self, goods_id):
         goods = models.Goods.query \
-                     .filter_by(id=good_id) \
+                     .filter_by(id=goods_id) \
                      .first() or abort(400)
         ratings = models.Rating.query \
                         .join(models.OrderItem) \
@@ -42,4 +42,4 @@ class GoodDetailView(MethodView):
 
 
 blueprint.add_url_rule('/', view_func=GoodsView.as_view(GoodsView.__name__))
-blueprint.add_url_rule('/<int:good_id>', view_func=GoodDetailView.as_view(GoodDetailView.__name__))
+blueprint.add_url_rule('/<int:goods_id>', view_func=GoodsDetailView.as_view(GoodsDetailView.__name__))
