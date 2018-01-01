@@ -40,8 +40,8 @@ def verify_token(token, token_name=None) -> bool:
     if not token_name:
         token_name = 'token'
 
-    expired = session.pop(token_name + '_expired')
-    timestamp = session.pop(token_name + '_generated_time')
+    expired = session.pop(token_name + '_expired', 0)
+    timestamp = session.pop(token_name + '_generated_time', 0)
     if not expired or not timestamp:
         return False
 

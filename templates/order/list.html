@@ -1,0 +1,45 @@
+{% extends "base/layout.html" %}
+
+{% block title %}Creative T-Shirt Trading Platform{% endblock %}
+
+{% block main %}
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">首頁</a></li>
+          <li class="breadcrumb-item active" aria-current="page">訂單記錄</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">訂單編號</th>
+            <th scope="col">下單時間</th>
+            <th scope="col">費用合計</th>
+            <th scope="col">狀態</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in order_list %}
+          <tr>
+            <td><a href="{{ url_for('order.OrderDetailView', order_id=order.id) }}">{{ order.id }}</a></td>
+            <td>{{ order.time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ order.amount }}</td>
+            <td>{{ '已付款' if order.is_paid else '尚未付款' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

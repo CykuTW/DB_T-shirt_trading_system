@@ -1,0 +1,129 @@
+{% extends "base/layout.html" %}
+
+{% block title %}Creative T-Shirt Trading Platform{% endblock %}
+
+{% block main %}
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">首頁</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('goods.GoodsView') }}">商品列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">訂購</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <form method="POST" action="{{ url_for('order.OrderReadyView') }}">
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col" style="cursor: pointer" id="item-select-all"><span class="oi oi-check"></span>全選</th>
+              <th scope="col">商品名稱</th>
+              <th scope="col">尺寸</th>
+              <th scope="col">價格</th>
+              <th scope="col">數量</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            {% if item.state != 'to sell' %}
+            <tr class="table-secondary">
+            {% else %}
+            <tr class="item-row">
+            {% endif %}
+              <th scope="row">
+                {% if item.state != 'to sell' %}
+                已下架
+                {% else %}
+                <input type="checkbox" class="item-check">
+                <input type="hidden" name="goods[]" value="{{ item.id }}" disabled>
+                {% endif %}
+              </th>
+              <td>
+                {% if item.state != 'to sell' %}
+                {{ item.name }}
+                {% else %}
+                <a href="{{ url_for('goods.GoodsDetailView', goods_id=item.id) }}" target="_blank">{{ item.name }}</a>
+                {% endif %}
+              </td>
+              <td>{{ item.type.size }}</td>
+              <td>{{ item.type.price }}</td>
+              <td>
+                {% if item.state != 'to sell' %}
+                0
+                {% else %}
+                <input type="number" name="goods_quantity[]" class="form-control" disabled min="1" value="1" style="width: 5rem;">
+                {% endif %}
+              </td>
+              <td><span title="將商品移出購物車" class="oi oi-x" style="cursor: pointer"></span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label text-center">
+              合計
+            </label>
+            <div class="col-sm-9">
+              <input type="text" id="item-total" class="form-control" value="0" readonly>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">結帳</button>
+            <input type="hidden" name="token" value="{{ token }}">
+          </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  var update_amount = function() {
+    let total = 0;
+    $('.item-row').each(function() {
+      if ($(this).find('.item-check').is(":checked")) {
+        try {
+          let price = parseInt($(this).find('td:nth-child(4)').text());
+          let quantity = parseInt($(this).find('[name="goods_quantity[]"]').val());
+          total += price * quantity;
+        } catch(err) {
+          console.log(err);
+        }
+      }
+    })
+    $('#item-total').val(total);
+  }
+
+  $('.item-row').on('click', function() {
+    let check = $(this).find('.item-check');
+    check.prop('checked', !check.is(":checked"));
+    if (check.is(":checked")) {
+      $(this).addClass('table-primary');
+      $(this).find('[name="goods[]"]').prop('disabled', false);
+      $(this).find('[name="goods_quantity[]"]').prop('disabled', false);
+    } else {
+      $(this).removeClass('table-primary');
+      $(this).find('[name="goods[]"]').prop('disabled', true);
+      $(this).find('[name="goods_quantity[]"]').prop('disabled', true);
+    }
+    update_amount();
+  });
+
+  $('#item-select-all').on('click', function() {
+    $('.item-row').find('.item-check').prop('checked', false);
+    $('.item-row').click();
+  });
+</script>
+
+{% endblock %}

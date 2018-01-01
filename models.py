@@ -93,7 +93,7 @@ class Rating(db.Model):
 class ShoppingCartItem(db.Model):
     __tablename__ = 'ShoppingCartItem'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    amount = db.Column(db.Integer, nullable=False, default=1)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
     memeber_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
     member = db.relationship('Member', backref=db.backref('shopping_cart', cascade='all,delete-orphan'), single_parent=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('Goods.id'))

@@ -5,7 +5,7 @@ import views
 import utils
 import click
 import utils
-from flask import Flask, url_for, render_template
+from flask import Flask, url_for, render_template, escape, redirect
 from flask.cli import FlaskGroup
 
 
@@ -30,8 +30,13 @@ def load_user(user_id):
 app.register_blueprint(views.membership.blueprint, url_prefix='/membership')
 app.register_blueprint(views.goods.blueprint, url_prefix='/goods')
 app.register_blueprint(views.shopping_cart.blueprint, url_prefix='/shopping_cart')
+app.register_blueprint(views.order.blueprint, url_prefix='/order')
 app.register_blueprint(views.shopping_cart.api_blueprint, url_prefix='/api/shopping_cart')
 
+
+@app.route('/')
+def home():
+    return redirect(url_for('goods.GoodsView'))
 
 # Error handler
 @app.errorhandler(400)
@@ -42,9 +47,9 @@ app.register_blueprint(views.shopping_cart.api_blueprint, url_prefix='/api/shopp
 def error_handler(e):
     error_file = os.path.join(os.getcwd(), 'templates/errors/{}.html'.format(e.code))
     if os.path.isfile(error_file):
-        return render_template('errors/{}.html'.format(e.code)), e.code
+        return render_template('errors/{}.html'.format(e.code), error=e), e.code
     else:
-        return str(e.code), e.code
+        return '{}, {}'.format(str(e.code), escape(e.description)), e.code
 
 
 def create_app(info=None):
@@ -71,7 +76,7 @@ def create_testdata():
         member.username = 'user'
         member.password = utils.bcrypt.generate_password_hash('password')
         member.email = 'xiaoming@gmail.com'
-        member.sex = 'Male'
+        member.sex = 'male'
         member.phone = '0123456789'
         member.permission = 0x1
         models.db.session.add(member)
@@ -86,7 +91,16 @@ def create_testdata():
 
         goods = models.Goods()
         goods.name = 'test1'
-        goods.state = 'test1'
+        goods.state = 'to sell'
+        goods.type = goods_type
+        goods.author = member
+
+        models.db.session.add(goods)
+        models.db.session.commit()
+
+        goods = models.Goods()
+        goods.name = 'test2'
+        goods.state = 'to sell'
         goods.type = goods_type
         goods.author = member
         goods.description = '''this is a description for test1.
@@ -101,14 +115,6 @@ this is a description for test1.
 this is a description for test1.
 this is a description for test1.
 '''
-        models.db.session.add(goods)
-        models.db.session.commit()
-
-        goods = models.Goods()
-        goods.name = 'test2'
-        goods.state = 'test2'
-        goods.type = goods_type
-        goods.author = member
         models.db.session.add(goods)
         models.db.session.commit()
 
