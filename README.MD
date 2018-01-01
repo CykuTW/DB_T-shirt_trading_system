@@ -13,7 +13,7 @@
 python -m venv venv # create a virtual environment folder called venv
 
 # activate it
-venv/bin/activate # for Linux
+source venv/bin/activate # for Linux
 venv\Scripts\activate # for Windows
 
 # install required packages
