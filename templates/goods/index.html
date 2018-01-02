@@ -62,6 +62,15 @@
 
   </div>
   <!-- /.row -->
+  {% from 'base/macro.html' import pagination %}
+  <div class="row">
+    <div class="col-12">
+      {% set page = args.get('page', 1) | int %}
+      {% set total_page = (goods_total/args.get('count', 12)|int+1)|round|int %}
+      {% set link_url = '?type={}&keyword={}'.format(args.get('type', ''), args.get('keyword', '')) + '&page={}' %}
+      {{ pagination(page, total_page, link_url) }}
+    </div>
+  </div>
 
 </div>
 <!-- /.container -->
