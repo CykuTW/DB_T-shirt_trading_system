@@ -7,6 +7,14 @@
 
 ## Development Environment
 
+### Set up your MariaDB/MySQL and Redis server
+
+```python
+# in config.py
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/db?charset=utf8mb4'
+REDIS_URL = 'redis://:@localhost:6379/0'
+```
+
 ### Create environment (python virtual environment)
 
 ```bash
