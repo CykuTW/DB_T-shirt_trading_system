@@ -80,56 +80,52 @@ def create_testdata():
         member.phone = '0123456789'
         member.permission = 0x1
         models.db.session.add(member)
-        models.db.session.commit()
 
         goods_type = models.GoodsType()
         goods_type.size = 'M'
         goods_type.state = 'test'
         goods_type.price = 399
         models.db.session.add(goods_type)
-        models.db.session.commit()
 
         goods = models.Goods()
-        goods.name = 'test1'
+        goods.name = 'Sad Frog'
         goods.state = 'to sell'
         goods.type = goods_type
         goods.author = member
+        goods.image = '/static/images/pepe-the-frog-s.jpg'
 
         models.db.session.add(goods)
-        models.db.session.commit()
 
         goods = models.Goods()
-        goods.name = 'test2'
+        goods.name = 'Cool Frog'
         goods.state = 'to sell'
         goods.type = goods_type
         goods.author = member
-        goods.description = '''this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
-this is a description for test1.
+        goods.description = '''this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
+this is a description for Cool Frog.
 '''
+        goods.image = '/static/images/pepe-cool-the-frog-s.jpg'
         models.db.session.add(goods)
-        models.db.session.commit()
 
         order = models.Order()
         order.amount = 399
         order.purchaser = member
         models.db.session.add(order)
-        models.db.session.commit()
 
         order_item = models.OrderItem()
         order_item.quantity = 1
         order_item.goods = goods
         order_item.order = order
         models.db.session.add(order_item)
-        models.db.session.commit()
 
         rating = models.Rating()
         rating.score = 4

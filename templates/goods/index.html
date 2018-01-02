@@ -8,9 +8,9 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-3">
-      <div id="imaginary_container">
+      <div style="margin-top: 3rem; margin-bottom: 1rem;">
         <div class="input-group stylish-input-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="搜尋商品">
           <span class="input-group-addon">
             <button type="submit">
               <span class="glyphicon glyphicon-search"></span>
@@ -38,7 +38,7 @@
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="card h-100">
             <a href="#">
-              <img class="card-img-top" src="{{ url_for('static', filename='images/cat.jpg') }}" alt="">
+              <img class="card-img-top" src="{{ goods.image }}" alt="">
             </a>
             <div class="card-body">
               <h4 class="card-title">

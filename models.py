@@ -48,6 +48,7 @@ class Goods(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('Member.id'))
     author = db.relationship('Member', backref='goods_list')
     description = db.Column(db.Text, nullable=False, default='')
+    image = db.Column(db.Text, nullable=False)
 
 
 class GoodsType(db.Model):
