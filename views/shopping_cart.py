@@ -34,7 +34,8 @@ class ApiShoppingCartView(MethodView):
                 'id': goods.id,
                 'name': goods.name,
                 'size': goods.type.size,
-                'price': goods.type.price
+                'price': goods.type.price,
+                'image': goods.image
             })
         )
         return 'OK'
@@ -52,7 +53,8 @@ class ApiShoppingCartItemView(MethodView):
                 'id': goods.id,
                 'name': goods.name,
                 'size': goods.type.size,
-                'price': goods.type.price
+                'price': goods.type.price,
+                'image': goods.image
             })
         )
         return 'OK'
@@ -74,7 +76,8 @@ def _before_request():
                     'id': goods.id,
                     'name': goods.name,
                     'size': goods.type.size,
-                    'price': goods.type.price
+                    'price': goods.type.price,
+                    'image': goods.image
                 })
             )
             models.db.session.delete(item)
