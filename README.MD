@@ -57,6 +57,7 @@ views/            | 視圖函式 (Controller)
 static/           | 靜態文件 (js、css、imgae files)
 test/             | 所有單元測試、測試檔案均放在此處
 flask_validate/   | 自訂的 extension，使用方法參閱下方
+docs/             | 報告檔案
 
 ## flask_validate extension
 
